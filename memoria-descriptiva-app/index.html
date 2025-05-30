@@ -1,0 +1,85 @@
+
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Memoria Descriptiva - Gestión de Administrador Contrato</title>
+  <style>
+    body { font-family: Arial; margin: 20px; background-color: #f4f7fa; color: #333; }
+    h1 { color: #003366; }
+    label { display: block; margin-top: 10px; }
+    input, textarea, select { width: 100%; padding: 8px; margin-top: 5px; }
+    .btn { background: #003366; color: white; border: none; padding: 10px 20px; margin-top: 20px; cursor: pointer; }
+    .semaforo { font-weight: bold; padding: 10px; text-align: center; color: white; border-radius: 5px; margin-top: 15px; }
+    .verde { background-color: green; }
+    .amarillo { background-color: orange; }
+    .rojo { background-color: red; }
+  </style>
+</head>
+<body>
+
+  <h1>GESTIÓN DE ADMINISTRADOR CONTRATO</h1>
+
+  <form id="formulario">
+    <label>Área Solicitante y Usuario:</label>
+    <input type="text" name="area_usuario" required>
+
+    <label>Área de Beneficio:</label>
+    <input type="text" name="area_beneficio" required>
+
+    <label>Celular / Email:</label>
+    <input type="text" name="contacto" required>
+
+    <label>N° de Cesta de las Compras:</label>
+    <input type="text" name="cesta" required>
+
+    <label>Duración del Servicio:</label>
+    <select name="duracion" id="duracion">
+      <option value="menos_30">Menos de 30 días</option>
+      <option value="30_90">De 30 a 90 días</option>
+      <option value="mas_90">Mayor a 90 días</option>
+    </select>
+
+    <label>Selecciona Actividades:</label>
+    <select id="actividad" multiple>
+      <option>1 - Actividades administrativas</option>
+      <option>2 - Operativas bajo riesgo</option>
+      <option>3 - Exposición a químicos</option>
+      <option>4 - Residuos peligrosos</option>
+      <option>5 - Energía eléctrica</option>
+      <option>6 - Radiación ionizante</option>
+      <option>7 - Trabajo en alturas</option>
+    </select>
+
+    <label>Objetivo de Actividades:</label>
+    <textarea name="objetivo" rows="4"></textarea>
+
+    <button type="button" class="btn" onclick="calcularRiesgo()">Calcular Riesgo</button>
+  </form>
+
+  <div id="resultado" class="semaforo" style="display:none;"></div>
+
+  <script>
+    function calcularRiesgo() {
+      const duracion = document.getElementById("duracion").value;
+      const actividades = document.getElementById("actividad").selectedOptions;
+      let riesgo = 1;
+
+      if (actividades.length >= 5 || duracion === "mas_90") {
+        riesgo = 4;
+      } else if (actividades.length >= 3 || duracion === "30_90") {
+        riesgo = 3;
+      } else if (actividades.length >= 2) {
+        riesgo = 2;
+      }
+
+      const resultado = document.getElementById("resultado");
+      resultado.style.display = "block";
+      resultado.className = "semaforo " + (riesgo === 1 ? "verde" : riesgo === 2 ? "amarillo" : "rojo");
+      resultado.textContent = "Nivel de Riesgo: " + riesgo + " - Se mostrarán los requisitos automáticamente.";
+    }
+  </script>
+
+</body>
+</html>
